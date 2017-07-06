@@ -1,3 +1,5 @@
 
 target/classes/static/
 /target/
+
+src/main/resources/static/
