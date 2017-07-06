@@ -5,6 +5,8 @@ public class HashtagCount {
 	private String hashtag;
 	private int count;
 	
+	public HashtagCount(){}
+	
 	public HashtagCount(String hashtag, int count) {
 		super();
 		this.hashtag = hashtag;

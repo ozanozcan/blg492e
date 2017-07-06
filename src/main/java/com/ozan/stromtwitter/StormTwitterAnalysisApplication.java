@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,12 @@ import com.ozan.stromtwitter.model.HashtagCount;
 @Controller
 @SpringBootApplication
 public class StormTwitterAnalysisApplication {
+	
+	@Value("${executeCommand}")
+	private String executeCommand;
+	
+	@Value("${resultPath}")
+	private String resultPath;
 
 	public static void main(String[] args) {
 		SpringApplication.run(StormTwitterAnalysisApplication.class, args);
@@ -70,11 +77,10 @@ public class StormTwitterAnalysisApplication {
     public String makeAnalysis(Locale locale, Model model,
     		@RequestParam(value = "runDuration", required = true) int runDuration,
     		@RequestParam(value = "keywords", required = true) String keywords) {
-
-		String executeCmd = "/home/huseyin/Documents/ozanbitirme/apache-storm-1.0.2/bin/storm jar "
-				+ "/home/huseyin/Documents/Git/storm/examples/storm-starter/target/storm-starter-2.0.0-SNAPSHOT.jar "
-				+ "org.apache.storm.starter.TwitterHashtagStorm "
-//				+ "10000 nba lebron";
+		
+		deleteFiles();
+		
+		String executeCmd = executeCommand 
 				+ Integer.toString(runDuration) + " "
 				+ keywords;
 		
@@ -85,7 +91,7 @@ public class StormTwitterAnalysisApplication {
 			Process proc = rt.exec(executeCmd);
 			
 			StreamGobbler outputGobbler = new 
-	                StreamGobbler(proc.getInputStream(), "OUTPUT", "/home/huseyin/Desktop/OzanSonuc/output.txt");
+	                StreamGobbler(proc.getInputStream(), "OUTPUT", resultPath+"output.txt");
 			
 			outputGobbler.start();
 			
@@ -104,7 +110,7 @@ public class StormTwitterAnalysisApplication {
         
         try{
         	
-        	File hastagFile = new File("/home/huseyin/Desktop/OzanSonuc/hashtag.txt");
+        	File hastagFile = new File(resultPath+"hashtag.txt");
         	BufferedReader br = new BufferedReader(new FileReader(hastagFile));
         	
 			String line;
@@ -159,5 +165,37 @@ public class StormTwitterAnalysisApplication {
 	        	ioe.printStackTrace();  
 	        }
 	    }
+	}
+	
+	private void deleteFiles(){
+		
+		try{
+    		File file = new File(resultPath+"hashtag.txt");
+    		file.delete();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+		
+		try{
+    		File file = new File(resultPath+"links.txt");
+    		file.delete();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+		
+		try{
+    		File file = new File(resultPath+"media.txt");
+    		file.delete();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+		
+		try{
+    		File file = new File(resultPath+"output.txt");
+    		file.delete();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+		
 	}
 }
