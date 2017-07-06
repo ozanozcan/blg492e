@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Kale Kilit</title>
+
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet"/>
+
+    <link th:href="@{/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}"/>
+
+</head>
+
+<body class="pace-done boxed-layout fixed-sidebar mini-navbar">
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+       		
+       		<div class="row"> <!-- Error and Success Alerts -->
+       			<div class="alert alert-danger alert-dismissable" th:if="${error != null}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <div th:text="${error}"></div>
+                </div>
+                <div class="alert alert-success alert-dismissable" th:if="${success != null}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <div th:text="${success}"></div>
+                </div>
+	        </div>
+	        
+	        <div class="row"> <!-- Form -->
+	        
+	        	<div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12"> 
+		       		<div class="ibox float-e-margins">
+		                <div class="ibox-title">
+		                    <h5>Enter the parameters...</h5>
+		                </div>
+		                <div class="ibox-content">
+		                    <form role="form" th:action="@{/makeAnalysis}" class="form-inline" method="POST">
+		                        <div class="form-group">
+		                            <label for="runDuration" class="sr-only">Run Duration</label>
+		                            <input type="number" id="runDuration" placeholder="Run Duration" class="form-control" name="runDuration"/>
+		                        </div>
+		                        <div class="form-group">
+		                            <label for="keywords" class="sr-only">Keywords (space separated)</label>
+		                            <input type="text" id="keywords" placeholder="Keywords (space separated)" class="form-control" name="keywords"/>
+		                        </div>
+		                        <button class="btn btn-white" type="submit">Analysis</button>
+		                    </form>
+		                </div>
+		            </div>
+	            </div>
+	        </div>
+	        
+	        <div class="row"> <!-- Analysis -->
+       			
+       			<div class="col-lg-4 col-md-4 col-sm-12" th:if="${hashtags != null}">
+       				<div class="ibox float-e-margins">
+		                <div class="ibox-title">
+		                    <h5>Most popular hashtags</h5>
+		                </div>
+		                <div class="ibox-content">
+		                	<table class="table">
+	                            <thead>
+		                            <tr>
+		                                <th>Hashtag</th>
+		                                <th>Count</th>
+		                            </tr>
+	                            </thead>
+	                            <tbody>
+		                            <tr th:each="hashtag : ${hashtags}">
+		                                <td th:text="${hashtag.hashtag}"></td>
+		                                <td th:text="${hashtag.count}"></td>
+		                            </tr>
+	                            </tbody>
+	                        </table>
+		                </div>
+		            </div>
+       			</div>
+       			
+       			<div class="col-lg-4 col-md-4 col-sm-12">
+       			
+       			</div>
+       			
+       			<div class="col-lg-4 col-md-4 col-sm-12">
+       			
+       			</div>
+	        
+	        </div>  
+	        
+	        <div class="footer" th:fragment="footer">
+	        	<div class="pull-right">
+	            	<img alt="image" class="img" th:src="@{/img/logo.png}" style="width:100px;height:19px;"/>
+	            </div>
+		        <div>
+		            <strong>Copyright</strong> Ozan &copy; 2016-2017
+		        </div>
+	        </div>
+        </div>
+	</div>
+
+    <!-- Mainly scripts -->
+    <div th:fragment="scripts">
+    	<script th:src="@{/js/jquery-2.1.1.js}"></script>
+    	<script th:src="@{/js/bootstrap.min.js}"></script>
+    	<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+   		<script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+	
+	    <!-- Custom and plugin javascript -->
+	    <script th:src="@{/js/inspinia.js}"></script>
+	    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+    </div>
+    
+    <script type="text/javascript" th:inline="javascript">
+    	$(document).ready(function(){
+        	$('#signOut').click(function(){
+        		window.close();
+        	});
+      	});
+    </script>
+    
+</body>
+</html>
